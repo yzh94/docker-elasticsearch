@@ -1,15 +1,8 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  annotations:
-    deprecated.daemonset.template.generation: "8"
-  creationTimestamp: "2020-07-24T02:31:12Z"
-  generation: 8
   name: elk-test
   namespace: default
-  resourceVersion: "162650184"
-  selfLink: /apis/apps/v1/namespaces/default/daemonsets/elk-test
-  uid: 93cd9374-26aa-4008-9718-19d0d21d0a97
 spec:
   revisionHistoryLimit: 10
   selector:
