@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  annotations:
+    deprecated.daemonset.template.generation: "8"
+  creationTimestamp: "2020-07-24T02:31:12Z"
+  generation: 8
+  name: elk-test
+  namespace: default
+  resourceVersion: "162650184"
+  selfLink: /apis/apps/v1/namespaces/default/daemonsets/elk-test
+  uid: 93cd9374-26aa-4008-9718-19d0d21d0a97
+spec:
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      name: elk-test
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        name: elk-test
+    spec:
+      containers:
+      - env:
+        - name: uid
+          value: "1015"
+        - name: LANG
+          value: zh_CN.UTF-8
+        - name: node_attrs
+         value: hot
+        - name: unicast_hosts
+          value: 101.254.242.27,101.254.242.29,101.254.242.32
+        - name: master_hosts
+          value: '"101.254.242.27","101.254.242.29","101.254.242.32"'
+        - name: cluster_name
+          value: yzh-test
+        - name: http_port
+          value: "9200"
+        - name: name
+          value: es
+        - name: ip_range
+          value: 101.254.242
+        - name: group
+          value: k8s
+        - name: k8s
+          value: "1"
+        - name: Xms
+          value: "2"
+        - name: Xmx
+          value: "2"
+        image: harbor.emarbox.com/sys/elasticsearch-yzh:11
+        imagePullPolicy: IfNotPresent
+        name: elk-test
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /data/elk/elasticsearch/data
+          name: elasticsearch-data
+        - mountPath: /data/elk/elasticsearch/logs
+          name: elasticsearch-logs
+        - mountPath: /data/java
+          name: java-home
+      dnsPolicy: ClusterFirst
+      hostNetwork: true
+      nodeSelector:
+        elk-test: elk-test
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 10
+      volumes:
+      - hostPath:
+          path: /data/elk/elasticsearch/data
+          type: ""
+        name: elasticsearch-data
+      - hostPath:
+          path: /data/elk/elasticsearch/logs
+          type: ""
+        name: elasticsearch-logs
+      - hostPath:
+          path: /data/java
+          type: ""
+        name: java-home
+  updateStrategy:
+    type: OnDelete
