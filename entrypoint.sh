@@ -24,14 +24,13 @@ fi
 
 node_name=`/sbin/ifconfig |grep "inet "|grep "$ip_range"|grep -v docker|awk '{print $2}'|awk '{print $1}'|head -n 1`
 
-echo "network.host: ${node_name}" >> config/elasticsearch.yml
-echo "network.publish_host: ${node_name}"  >> config/elasticsearch.yml
-echo "node.attr.temperature: ${node_attrs}" >> config/elasticsearch.yml
-echo "discovery.seed_hosts: [${unicast_hosts}]" >> config/elasticsearch.yml
-echo "cluster.initial_master_nodes: [${master_hosts}]" >> config/elasticsearch.yml
-echo "cluster.name: ${cluster_name}" >> config/elasticsearch.yml
-echo "http.port: ${http_port}" >> config/elasticsearch.yml
-echo "node.name: ${node_name}" >> config/elasticsearch.yml
+
+sed -i 's/hot/'"${node_attrs}"'/' config/elasticsearch.yml
+sed -i 's/unicasthosts/'"${unicast_hosts}"'/'     config/elasticsearch.yml
+sed -i 's/master.hosts/'"${master_hosts}"'/'     config/elasticsearch.yml
+sed -i 's/my-application/'"${cluster_name}"'/' config/elasticsearch.yml
+sed -i 's/9200/'"${http_port}"'/' config/elasticsearch.yml
+sed -i 's/node-1/'"${node_name}"'/' config/elasticsearch.yml
 #20200317
 rm -rf /usr/java
 
